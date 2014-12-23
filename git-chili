@@ -13,8 +13,6 @@ q,quiet         do not display issue description
 
 . $(git --exec-path)/git-sh-setup
 
-echo "Options: $*"
-
 quiet=
 browser=
 xslt="$(dirname $(readlink -f $0))/chili-issue.xsl"
@@ -26,7 +24,7 @@ while [ $# -gt 0 ]; do
     -q) quiet=1 ;;
     -b) browser=1 ;;
     --) break ;;
-    *)  die-with-status 129 "Unexpected option: $opt" ;;
+    *)  die_with_status 129 "Unexpected option: $opt" ;;
   esac
 done
 
@@ -34,7 +32,7 @@ url=$(git config --get chili.url)
 
 if [ -z "$url" ]
 then
-  die-with-status 130 "No ChiliProject repository configured. Use something like
+  die_with_status 130 "No ChiliProject repository configured. Use something like
   git config chili.url https://projects.gwdg.de/
 to configure the repository URL."
 fi

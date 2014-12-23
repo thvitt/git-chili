@@ -46,6 +46,8 @@ fi
   git show -s "$@" | grep -o '#[0-9]\+' | while read bug_ref
   do
     bug=${bug_ref:1}
+    bugurl="${url}/issues/${bug}"
+    echo "$bugurl"
     if [ \! -z "$browser" ]
     then
       git web--browse "${url}/issues/${bug}"

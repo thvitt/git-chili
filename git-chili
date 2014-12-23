@@ -37,24 +37,23 @@ then
 to configure the repository URL."
 fi
 
-# Now try to find something
-match_count=0
-
-if [ -z "$quiet" ]
-then
-  git show -s "$@"
-fi
-
-git show -s "$@" | grep -o '#[0-9]\+' | while read bug_ref
-do
-  bug=${bug_ref:1}
-  if [ \! -z "$browser" ]
-  then
-    git web--browse "${url}/issues/${bug}"
-  fi
-
+{
   if [ -z "$quiet" ]
   then
-    curl -s "${url}/issues/${bug}.xml" | xsltproc "${xslt}" -
+    git show -s "$@"
   fi
-done
+
+  git show -s "$@" | grep -o '#[0-9]\+' | while read bug_ref
+  do
+    bug=${bug_ref:1}
+    if [ \! -z "$browser" ]
+    then
+      git web--browse "${url}/issues/${bug}"
+    fi
+
+    if [ -z "$quiet" ]
+    then
+      curl -s "${url}/issues/${bug}.xml" | xsltproc "${xslt}" -
+    fi
+  done
+} | git_pager
